@@ -1,7 +1,7 @@
 use std::{
     env, fs,
     io::{ErrorKind, Write},
-    path::{Path, PathBuf},
+    path::{Path, PathBuf, absolute},
     time::Instant,
 };
 
@@ -129,7 +129,7 @@ impl Runner for LintRunner {
 
                 paths.retain_mut(|p| {
                     // Try to prepend cwd to all paths
-                    let Ok(mut path) = self.cwd.join(&p).canonicalize() else {
+                    let Ok(mut path) = absolute(self.cwd.join(&p)) else {
                         return false;
                     };
 
